@@ -70,7 +70,7 @@
             series: [
                 {
                     data: actualGlucose,
-                    lineWidth: 1,
+                    lineWidth: 0,
                     marker: {
                         enabled: true,
                         lineColor: Highcharts.getOptions().colors[0],
