@@ -63,7 +63,8 @@
                 type: 'datetime',
                 labels: {
                     format: "{value:%l %p}"
-                }
+                },
+                crosshair: true
             },
             yAxis: {
                 startOnTick: true,
