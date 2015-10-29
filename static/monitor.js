@@ -68,7 +68,7 @@
             yAxis: {
                 startOnTick: true,
                 endOnTick: true,
-                title: null
+                title: null,
                 plotBands: [{
                     from: 80,
                     to: 180,
