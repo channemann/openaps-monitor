@@ -120,6 +120,20 @@
                 }
             ],
             tooltip: {
+                positioner: function () {
+                            return {
+                                x: this.chart.chartWidth - this.label.width, // right aligned
+                                y: -1 // align to title
+                            };
+                        },
+                borderWidth: 0,
+                        backgroundColor: 'none',
+                        pointFormat: '{point.y}',
+                        headerFormat: '',
+                        shadow: false,
+                        style: {
+                            fontSize: '18px'
+                        },
                 shared: true,
                 valueDecimals: 0,
                 valueSuffix: ' ' + displayUnit,
