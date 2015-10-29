@@ -133,7 +133,7 @@
                 // headerFormat: '',
                 shadow: false,
                 style: {
-                        fontSize: '24px'
+                        fontSize: '20px'
                 },
                 shared: true,
                 valueDecimals: 0,
