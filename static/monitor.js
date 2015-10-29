@@ -111,7 +111,7 @@
                 {
                     color: Highcharts.getOptions().colors[0],
                     data: targetGlucose,
-                    fillOpacity: 0.5,
+                    fillOpacity: 0.4,
                     lineWidth: 0,
                     linkedTo: ':previous',
                     name: 'Targets',
