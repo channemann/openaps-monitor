@@ -74,7 +74,7 @@
                     to: 180,
                     color: Highcharts.getOptions().colors[0],
                     fillOpacity: 0.3
-                    }
+                    }]
             },
             series: [
                 {
