@@ -51,10 +51,13 @@
                 enabled: false
             },
             credits: {
-                        enabled: false
-                    },
+                enabled: false
+            },
             title: {
-                text: null
+                text: 'OpenAPS',
+                align: 'left',
+                margin: 0,
+                x: 30
             },
             xAxis: {
                 gridLineWidth: 1,
