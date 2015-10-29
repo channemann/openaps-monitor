@@ -54,7 +54,7 @@
                 enabled: false
             },
             title: {
-                text: 'OpenAPS',
+                text: ' ',
                 align: 'left',
                 margin: 0,
                 x: 30
@@ -138,7 +138,7 @@
                 style: {
                         fontSize: '20px'
                 },
-                shared: true,
+                shared: false,
                 valueDecimals: 0,
                 valueSuffix: ' ' + displayUnit,
                 xDateFormat: "%l:%M %p"
