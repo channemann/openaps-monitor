@@ -50,6 +50,9 @@
             legend: {
                 enabled: false
             },
+            credits: {
+                        enabled: false
+                    },
             title: {
                 text: null
             },
