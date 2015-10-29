@@ -72,8 +72,7 @@
                 plotBands: [{
                     from: 80,
                     to: 180,
-                    color: Highcharts.getOptions().colors[0],
-                    fillOpacity: 0.3
+                    color: 'rgba(68, 170, 213, 0.1)'
                     }]
             },
             series: [
