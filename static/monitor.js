@@ -123,7 +123,7 @@
             tooltip: {
                 positioner: function () {
                             return {
-                                x: this.chart.chartWidth - this.label.width, // right aligned
+                                x: this.chart.chartWidth - 2*this.label.width, // right aligned
                                 y: -1 // align to title
                             };
                         },
