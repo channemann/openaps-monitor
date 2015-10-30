@@ -54,9 +54,9 @@
                 enabled: false
             },
             title: {
-                text: ' ',
+                text: ' ',
                 align: 'left',
-                margin: 0,
+                margin: 30,
                 x: 30
             },
             xAxis: {
@@ -126,7 +126,7 @@
             tooltip: {
                 positioner: function () {
                             return {
-                                x: this.chart.chartWidth - this.label.width, // right aligned
+                                x: 35, //this.chart.chartWidth - this.label.width, // right aligned
                                 y: -1 // align to title
                             };
                         },
