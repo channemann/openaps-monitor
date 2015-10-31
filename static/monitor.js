@@ -12,68 +12,204 @@
         return rows;
     }
 
-    function defaultOptions(dataTable, height, isMaterial) {
-        var options = {
-            chartArea: { left: 35, top: 10, height: height - 30, width: '96%'},
-            height: height,
-            hAxis: {
-                gridlines: { count: -1 },
-                viewWindow: { }
+    var M = {};
+
+    M.syncExtremes = function (e) {
+        var thisChart = this.chart;
+
+        Highcharts.each(Highcharts.charts, function (chart) {
+            if (chart !== thisChart) {
+                if (chart.xAxis[0].setExtremes) { // It is null while updating
+                    chart.xAxis[0].setExtremes(e.min, e.max, true, false);
+                }
             }
-        };
+        });
+    }
 
-        if (!isMaterial) {
-            options.theme = 'material';
-        }
-
-        return options;
+    M.setupHighcharts = function () {
+        Highcharts.setOptions({
+            chart: {
+                marginLeft: 40,
+                style: {
+                    fontFamily: '-apple-system, sans-serif'
+                }
+            },
+            credits: {
+                enabled: false  
+            },
+            legend: {
+                enabled: false
+            },
+            title: {
+                text: null
+            },
+            tooltip: {
+                borderWidth: 0,
+                positioner: function() {
+                    return { x: this.chart.chartWidth - this.label.width - 10, y: 1 }
+                },
+                shadow: false,
+                xDateFormat: "%l:%M %p"
+            },
+            xAxis: {
+                crosshair: true,
+                gridLineWidth: 1,
+                labels: {
+                    format: '{value:%l %p}'
+                },
+                minTickInterval: 60*60*1000,
+                tickWidth: 0,
+                type: 'datetime',
+                events: {
+                    setExtremes: M.syncExtremes
+                }
+            },
+            yAxis: {
+                startOnTick: true,
+                endOnTick: true,
+                title: null
+            }
+        });
     }
 
     /**
+     * Creates the configuration options for displaying glucose values in a Highcharts line graph
      *
-     * @param {!Object} cols
-     * @param {!Object} rows
-     * @param {!HTMLElement} element
-     * @param {boolean=} isMaterial
-     * @constructor
+     * http://api.highcharts.com/highcharts
      */
-    var GlucoseLineChart = function(cols, rows, element, isMaterial, display_unit) {
-        this.height = parseInt(getComputedStyle(element)['height']);
-
-        this.dataTable = this.buildDataTable(cols, rows);
-        this.options = this.buildOptions(this.dataTable, isMaterial, display_unit);
-        var chartConstructor = isMaterial ? google.charts.Line : google.visualization.LineChart;
-
-        this.chart = new chartConstructor(element);
+    M.GlucoseLineHighchart = function(actualGlucose, predictedGlucose, targetGlucose, displayUnit) {
+        return {
+            chart: {
+                type: 'line'
+            },
+            series: [
+                {
+                    data: actualGlucose,
+                    lineWidth: 1,
+                    marker: {
+                        enabled: true,
+                    },
+                    name: "Glucose"
+                },
+                {
+                    color: Highcharts.getOptions().colors[0],
+                    data: predictedGlucose,
+                    dashStyle: "Dash",
+                    marker: {
+                        enabled: false,
+                        symbol: 'circle'
+                    },
+                    name: "Predicted",
+                },
+                {
+                    color: Highcharts.getOptions().colors[0],
+                    data: targetGlucose,
+                    fillOpacity: 0.3,
+                    followerPointer: false,
+                    followTouchMove: false,
+                    lineWidth: 0,
+                    name: 'Targets',
+                    states: {
+                        hover: {
+                            enabled: false
+                        }
+                    },
+                    stickyTracking: false,
+                    type: 'arearange',
+                    zIndex: 0
+                }
+            ],
+            tooltip: {
+                valueDecimals: 0,
+                valueSuffix: ' ' + displayUnit
+            }
+        };
     };
 
-    GlucoseLineChart.prototype.draw = function() {
-        this.chart.draw(this.dataTable, this.options);
+    M.InsulinAreaHighchart = function(iob, basal, bolus) {
+        return {
+            chart: {
+                type: 'area'
+            },
+            series: [
+                {
+                    data: iob,
+                    marker: {
+                        enabled: false
+                    },
+                    name: "IOB",
+                    tooltip: {
+                        valueSuffix: ' U'
+                    }
+                },
+                {
+                    data: basal,
+                    marker: {
+                        enabled: false
+                    },
+                    name: "Temp Basal",
+                    step: "left",
+                    tooltip: {
+                        valueSuffix: ' U/hour'
+                    }
+                },
+                {
+                    data: bolus,
+                    marker: {
+                        enabled: false
+                    },
+                    name: "Bolus",
+                    step: "left",
+                    tooltip: {
+                        valueSuffix: ' U'
+                    }
+                }
+            ],
+            tooltip: {
+                valueDecimals: 3
+            }
+        };
     };
 
-    GlucoseLineChart.prototype.buildDataTable = function(cols, rows) {
-        return new google.visualization.DataTable({cols: cols, rows: mapRows(rows)});
-    };
+    M.syncHighchartsMovementsInContainer = function($container) {
+        var max = -Infinity,
+            min = Infinity;
 
-    GlucoseLineChart.prototype.buildOptions = function(dataTable, isMaterial, display_unit) {
-        var options = defaultOptions(dataTable, this.height, isMaterial);
+        Highcharts.each(Highcharts.charts, function (chart) {
+            var extremes = chart.xAxis[0].getExtremes();
 
-        options.curveType = 'function';
-        options.interval = {};
-        options.intervals = { 'style': 'area' };
-        options.titlePosition = 'in';
+            max = Math.max(max, extremes.max);
+            min = Math.min(min, extremes.min);
+        });
 
-        if (display_unit == 'mmol/L') {
-          options.vAxis = { minValue: 4 };
-        } else {
-          options.vAxis = { minValue: 70 };
-        }
+        Highcharts.charts[0].xAxis[0].setExtremes(min, max, true, false);
 
-        if (isMaterial) {
-            options = google.charts.Line.convertOptions(options);
-        }
+        $container.bind('mousemove touchmove', function (e) {
+            var chart,
+                point,
+                i,
+                j;
 
-        return options;
+            for (i = 0; i < Highcharts.charts.length; i = i + 1) {
+                point = null;
+                chart = Highcharts.charts[i];
+                e = chart.pointer.normalize(e); // Find coordinates within the chart
+
+                for (j = 0; j < chart.series.length; j = j + 1) {
+                    var seriesPoint = chart.series[j].searchPoint(e, true); // Get the hovered point
+
+                    if (!point || point.dist > seriesPoint.dist) {
+                        point = seriesPoint;
+                    }
+                }
+
+                if (point) {
+                    point.onMouseOver(); // Show the hover marker
+                    chart.tooltip.refresh(point); // Show the tooltip
+                    chart.xAxis[0].drawCrosshair(e, point); // Show the crosshair
+                }
+            }
+        });
     };
 
     /**
@@ -102,10 +238,17 @@
     };
 
     InputAreaChart.prototype.buildOptions = function(dataTable) {
-        var options = defaultOptions(dataTable, this.height);
+        var options = {
+            chartArea: { left: 35, top: 10, height: this.height - 30, width: '96%'},
+            height: this.height,
+            hAxis: {
+                gridlines: { count: -1 },
+                viewWindow: { }
+            },
+            theme: 'material'
+        };
 
         options.series = {
-
             0: { targetAxisIndex: 0 },
             1: { targetAxisIndex: 0 },
             2: { targetAxisIndex: 0 },
@@ -120,6 +263,6 @@
     };
 
     // Exports
-    global.GlucoseLineChart = GlucoseLineChart;
+    global.Monitor = M;
     global.InputAreaChart = InputAreaChart;
 })(window);
