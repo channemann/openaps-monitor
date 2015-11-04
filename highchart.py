@@ -55,7 +55,6 @@ def glucose_target_range_chart(targets, start_datetime, end_datetime):
 def input_history_area_chart(normalized_history):
     basal = []
     bolus = []
-    square = []
     carbs = []
 
     for entry in normalized_history:
@@ -63,13 +62,11 @@ def input_history_area_chart(normalized_history):
             values = [
                 {
                     'x': timestamp(parse(entry['start_at'])),
-                    'y': entry['amount'],
-                    'name': entry['description']
+                    'y': entry['amount']
                 },
                 {
                     'x': timestamp(parse(entry['end_at'])),
-                    'y': entry['amount'],
-                    'name': entry['description']
+                    'y': entry['amount']
                 },
                 {
                     'x': timestamp(parse(entry['end_at'])),
@@ -80,29 +77,26 @@ def input_history_area_chart(normalized_history):
             if entry['type'] == 'TempBasal':
                 basal += values
             else:
-                square += values
-        elif entry['unit'] == 'U':
-            bolus += [
+                bolus += values
+        else:
+            values = [
                 {
                     'x': timestamp(parse(entry['start_at'])),
                     'y': entry['amount']
                 },
                 {
-                    'x': timestamp(parse(entry['end_at'])),
-                    'y': None
-                },
-            ]
-        elif entry['unit'] == 'g':
-            carbs += [
-                {
-                    'x': timestamp(parse(entry['start_at'])),
-                    'y': entry['amount'],
-                    'name': entry['description']
+                    'x': timestamp(parse(entry['end_at'])) + 60 * 1000,
+                    'y': entry['amount']
                 },
                 {
-                    'x': timestamp(parse(entry['end_at'])),
+                    'x': timestamp(parse(entry['end_at'])) + 60 * 1000,
                     'y': None
                 },
             ]
 
-    return basal, bolus, square, carbs
+            if entry['unit'] == 'U':
+                bolus += values
+            elif entry['unit'] == 'g':
+                carbs += values
+
+    return basal, bolus, carbs

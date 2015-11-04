@@ -10,15 +10,11 @@ pre code {
     white-space: pre;
 }
 
-#timeline {
-    -webkit-user-select: none;
-}
-
 #glucose_chart {
-    height: 300px;
+    height: 400px;
 }
 
-#basal_chart, #carbs_chart, #iob_chart {
+#input_chart, #insulin_chart, #carbs_chart {
     height: 100px;
 }
 
