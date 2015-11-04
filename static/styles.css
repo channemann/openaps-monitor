@@ -11,11 +11,11 @@ pre code {
 }
 
 #glucose_chart {
-    height: 400px;
+    height: 300px;
 }
 
-#input_chart, #insulin_chart, #carbs_chart {
-    height: 100px;
+#input_chart, #insulin_chart, #iob_chart, #carbs_chart {
+    height: 200px;
 }
 
 @media screen and (max-width:767px) {

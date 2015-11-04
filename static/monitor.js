@@ -41,14 +41,21 @@
                 enabled: false
             },
             title: {
-                text: null
+                text: ' ',
+                align: 'left',
+                margin: 20,
+                x: 30
             },
             tooltip: {
                 borderWidth: 0,
                 positioner: function() {
-                    return { x: this.chart.chartWidth - this.label.width - 10, y: 1 }
+                    return { x: 35, y: -1 }
                 },
                 shadow: false,
+                backgroundColor: 'none',
+                style: {
+                    fontSize: '18px'
+                },
                 xDateFormat: "%l:%M %p"
             },
             xAxis: {
@@ -82,10 +89,20 @@
             chart: {
                 type: 'line'
             },
+            yAxis: {
+                startOnTick: true,
+                endOnTick: true,
+                title: null,
+                plotBands: [{
+                    from: 80,
+                    to: 180,
+                    color: 'rgba(68, 170, 213, 0.1)'
+                    }]
+            },
             series: [
                 {
                     data: actualGlucose,
-                    lineWidth: 1,
+                    lineWidth: 0,
                     marker: {
                         enabled: true,
                     },
@@ -126,27 +143,18 @@
         };
     };
 
-    M.InsulinAreaHighchart = function(iob, basal, bolus) {
+    M.InsulinAreaHighchart = function(basal, bolus) {
         return {
             chart: {
                 type: 'area'
             },
             series: [
                 {
-                    data: iob,
-                    marker: {
-                        enabled: false
-                    },
-                    name: "IOB",
-                    tooltip: {
-                        valueSuffix: ' U'
-                    }
-                },
-                {
                     data: basal,
                     marker: {
                         enabled: false
                     },
+                    lineWidth: 0,
                     name: "Temp Basal",
                     step: "left",
                     tooltip: {
@@ -158,8 +166,33 @@
                     marker: {
                         enabled: false
                     },
+                    lineWidth: 0,
                     name: "Bolus",
                     step: "left",
+                    tooltip: {
+                        valueSuffix: ' U'
+                    }
+                }
+            ],
+            tooltip: {
+                valueDecimals: 3
+            }
+        };
+    };
+
+	M.IOBAreaHighchart = function(iob) {
+        return {
+            chart: {
+                type: 'area'
+            },
+            series: [
+                {
+                    data: iob,
+                    marker: {
+                        enabled: false
+                    },
+                    lineWidth: 0,              
+                    name: "IOB",
                     tooltip: {
                         valueSuffix: ' U'
                     }
@@ -198,7 +231,7 @@
                 for (j = 0; j < chart.series.length; j = j + 1) {
                     var seriesPoint = chart.series[j].searchPoint(e, true); // Get the hovered point
 
-                    if (!point || point.dist > seriesPoint.dist) {
+                    if (!point || point.distX > seriesPoint.distX) {
                         point = seriesPoint;
                     }
                 }

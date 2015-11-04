@@ -17,6 +17,7 @@
     <div id="timeline">
         <div id="glucose_chart"></div>
         <div id="insulin_chart"></div>
+        <div id="iob_chart"></div>
         <div id="input_chart"></div>
     </div>
 
@@ -67,9 +68,12 @@
         ));
 
         $('#insulin_chart').highcharts(Monitor.InsulinAreaHighchart(
-            {{ iob|tojson|safe }},
             {{ basal|tojson|safe }},
             {{ bolus|tojson|safe }}
+        ));
+        
+        $('#iob_chart').highcharts(Monitor.IOBAreaHighchart(
+            {{ iob|tojson|safe }}
         ));
 
         Monitor.syncHighchartsMovementsInContainer($('#timeline'));
