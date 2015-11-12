@@ -105,7 +105,7 @@
                     name: "Predicted",
                 },
                 {
-                    color: Highcharts.getOptions().colors[2],
+                    color: 'rgba(68, 170, 213, 0.5)', // Highcharts.getOptions().colors[0],
                     data: predictedGlucoseWithoutDose,
                     dashStyle: "Dash",
                     marker: {
@@ -134,7 +134,8 @@
             ],
             tooltip: {
                 valueDecimals: 0,
-                valueSuffix: ' ' + displayUnit
+                valueSuffix: ' ' + displayUnit,
+                shared: true
             }
         };
     };
