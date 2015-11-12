@@ -80,7 +80,7 @@
      *
      * http://api.highcharts.com/highcharts
      */
-    M.GlucoseLineHighchart = function(actualGlucose, predictedGlucose, targetGlucose, displayUnit) {
+    M.GlucoseLineHighchart = function(actualGlucose, predictedGlucose, predictedGlucoseWithoutDose, targetGlucose, displayUnit) {
         return {
             chart: {
                 type: 'line'
@@ -104,6 +104,16 @@
                     },
                     name: "Predicted",
                 },
+                {
+                    color: Highcharts.getOptions().colors[2],
+                    data: predictedGlucoseWithoutDose,
+                    dashStyle: "Dash",
+                    marker: {
+                        enabled: false,
+                        symbol: 'circle'
+                    },
+                    name: "Predicted Without Dose",
+                },                
                 {
                     color: Highcharts.getOptions().colors[0],
                     data: targetGlucose,
@@ -138,6 +148,7 @@
                 {
                     color: Highcharts.getOptions().colors[3],
                     data: square,
+                    lineWidth: 0,
                     marker: {
                         enabled: false
                     },
