@@ -134,8 +134,7 @@
             ],
             tooltip: {
                 valueDecimals: 0,
-                valueSuffix: ' ' + displayUnit,
-                shared: true
+                valueSuffix: ' ' + displayUnit
             }
         };
     };
@@ -171,6 +170,7 @@
             tooltip: {
                 valueDecimals: 3,
                 valueSuffix: ' U/hour'
+               
             },
             yAxis: {
                 plotLines: [{
@@ -207,7 +207,8 @@
             ],
             yAxis: {
                 tickPixelInterval: 24
-            }
+            },
+            
         };
     };
 
