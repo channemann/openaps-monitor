@@ -92,7 +92,12 @@
                     marker: {
                         enabled: true,
                     },
-                    name: "Glucose"
+                    name: "Glucose",
+                    states: {
+	                    hover: {
+		                    lineWidthPlus: 0
+	                    }
+                    }
                 },
                 {
                     color: Highcharts.getOptions().colors[0],
