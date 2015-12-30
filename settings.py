@@ -42,7 +42,7 @@ class Settings(object):
 
     # A report containing history data in reverse-chronological order. Each entry should be in the dictionary format as
     # defined by openapscontrib.mmhistorytools, and should be fully munged by those steps for best display.
-    NORMALIZE_HISTORY = 'normalize_history.json'
+    NORMALIZE_HISTORY = 'prepared_history_with_dose.json'
 
     # A report containing predicted glucose values in chronological order. Each entry should contain a local timestamp
     # and a glucose value:
